@@ -79,6 +79,9 @@ Backup_*/
 **/Backup/
 **/Backup_*/
 
+# Project documents & art source (내가 만든 자료는 포함)
+!/ArtSource/
+
 # Asset Store / third-party and general Assets control
 # 기본적으로 Assets 전체를 무시하고, 내가 만든/프로젝트 전용 폴더만 예외로 허용
 /Assets/*
