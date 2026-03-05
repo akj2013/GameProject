@@ -1,0 +1,108 @@
+# Unity - https://github.com/github/gitignore/blob/main/Unity.gitignore
+.utmp/
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+*.log
+
+*.blend1
+*.blend1.meta
+
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+/[Aa]ssets/Plugins/Editor/JetBrains*
+*.DotSettings.user
+
+.vs/
+.gradle/
+
+ExportedObj/
+.consulo/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+sysinfo.txt
+mono_crash.*
+
+*.apk
+*.aab
+*.unitypackage
+*.unitypackage.meta
+*.app
+
+crashlytics-build.properties
+InitTestScene*.unity*
+
+/ServerData
+/[Aa]ssets/StreamingAssets/aa*
+/[Aa]ssets/AddressableAssetsData/link.xml*
+/[Aa]ssets/Addressables_Temp*
+/[Aa]ssets/AddressableAssetsData/*/*.bin*
+
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db.meta
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
+
+/[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Unity/Project backups (불필요한 백업 폴더 제외)
+/[Bb]ackup/
+/[Bb]ackup_*/
+Backup/
+Backup_*/
+**/Backup/
+**/Backup_*/
+
+# Asset Store / third-party and general Assets control
+# 기본적으로 Assets 전체를 무시하고, 내가 만든/프로젝트 전용 폴더만 예외로 허용
+/Assets/*
+
+#! 프로젝트 전용/직접 만든 폴더들
+!/Assets/Docs/
+!/Assets/MyPrefab/
+!/Assets/MyScenes/
+!/Assets/MyScript/
+!/Assets/Resources/
+!/Assets/Settings/
+!/Assets/Editor/
+
+#! 루트에 있는 프로젝트 설정/리드미 자산
+!/Assets/DefaultVolumeProfile.asset
+!/Assets/DefaultVolumeProfile.asset.meta
+!/Assets/InputSystem_Actions.inputactions
+!/Assets/InputSystem_Actions.inputactions.meta
+!/Assets/Readme.asset
+!/Assets/Readme.asset.meta
+
+#! 서드파티/툴/스크린샷 등은 계속 무시
+/Assets/MCPForUnity/
+/Assets/TextMesh Pro/
+/Assets/Screenshots/
+/Assets/TextMesh Pro.meta
+/Assets/UnusedAssets*
