@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace WoodLand3D.Tiles
 {
+    using WoodLand3D.Core.Resources;
+
     /// <summary>
     /// Controls a single tile instance (lock/unlock visuals, trigger detection).
     /// </summary>
@@ -15,8 +17,18 @@ namespace WoodLand3D.Tiles
         [Header("Trigger")]
         [SerializeField] private Collider triggerCollider;
 
+        [Header("Highlight")]
+        [SerializeField] private Transform highlightTarget;
+        [SerializeField] private float highlightScaleMultiplier = 1.05f;
+
+        [Header("Resources")]
+        [SerializeField] private TileResourceSpawner resourceSpawner;
+
         public Vector2Int GridPos { get; private set; }
         public bool IsUnlocked { get; private set; }
+
+        private Vector3 _originalHighlightScale;
+        private bool _highlightInitialized;
 
         /// <summary>
         /// Initialize tile logical position and initial state.
@@ -25,63 +37,74 @@ namespace WoodLand3D.Tiles
         public void Initialize(Vector2Int pos, bool initiallyUnlocked)
         {
             GridPos = pos;
-            SetUnlocked(initiallyUnlocked, playFx: false);
+            // Force-apply visual state on initialization so locked tiles also configure correctly.
+            SetUnlocked(initiallyUnlocked, playFx: false, force: true);
 
             // Ensure tile root always stays on the flat plane.
             var t = transform;
             t.position = new Vector3(t.position.x, 0f, t.position.z);
 
+            if (highlightTarget == null)
+                highlightTarget = transform;
+
+            _originalHighlightScale = highlightTarget.localScale;
+            _highlightInitialized = true;
+
             if (triggerCollider != null)
             {
                 triggerCollider.isTrigger = true;
             }
+
+            // If this tile starts unlocked from save/load, ensure resources spawn.
+            if (IsUnlocked && resourceSpawner != null)
+            {
+                resourceSpawner.OnTileUnlocked();
+            }
         }
 
-        public void SetUnlocked(bool unlocked, bool playFx)
+        public void SetUnlocked(bool unlocked, bool playFx, bool force = false)
         {
-            if (IsUnlocked == unlocked)
+            if (!force && IsUnlocked == unlocked)
                 return;
 
+            // Always update visuals to match target state.
             IsUnlocked = unlocked;
 
             if (unlocked)
             {
                 if (playFx)
                 {
-                    StartCoroutine(PlayCloudFadeOut());
+                    StartCoroutine(PlayUnlockFx());
                 }
-                else if (cloudVisual != null)
+
+                // Spawn resources when tile becomes unlocked.
+                if (resourceSpawner != null)
                 {
-                    cloudVisual.SetActive(false);
+                    resourceSpawner.OnTileUnlocked();
                 }
-
-                if (unlockedRoot != null)
-                    unlockedRoot.SetActive(true);
             }
-            else
-            {
-                if (cloudVisual != null)
-                    cloudVisual.SetActive(true);
+            
+            if (cloudVisual != null)
+                cloudVisual.SetActive(!unlocked);
 
-                if (unlockedRoot != null)
-                    unlockedRoot.SetActive(false);
-            }
+            if (unlockedRoot != null)
+                unlockedRoot.SetActive(unlocked);
         }
 
         /// <summary>
         /// Simple visual feedback for unlocking.
-        /// Tries to scale the cloud up slightly before disabling it.
+        /// Scales the cloud up slightly, then disables it.
         /// </summary>
-        public IEnumerator PlayCloudFadeOut()
+        public IEnumerator PlayUnlockFx()
         {
             if (cloudVisual == null)
                 yield break;
 
             var cloudTransform = cloudVisual.transform;
             var originalScale = cloudTransform.localScale;
-            var targetScale = originalScale * 1.2f;
+            var targetScale = originalScale * 1.3f;
 
-            float duration = 0.3f;
+            float duration = 0.6f;
             float elapsed = 0f;
 
             while (elapsed < duration)
@@ -96,6 +119,22 @@ namespace WoodLand3D.Tiles
             cloudTransform.localScale = originalScale;
         }
 
+        public void ShowHighlight()
+        {
+            if (!_highlightInitialized || IsUnlocked || highlightTarget == null)
+                return;
+
+            highlightTarget.localScale = _originalHighlightScale * highlightScaleMultiplier;
+        }
+
+        public void HideHighlight()
+        {
+            if (!_highlightInitialized || highlightTarget == null)
+                return;
+
+            highlightTarget.localScale = _originalHighlightScale;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Player"))
@@ -108,6 +147,8 @@ namespace WoodLand3D.Tiles
             {
                 TileUnlockSystem.Instance.HandleTileTriggerEnter(this);
             }
+
+            ShowHighlight();
         }
 
         private void OnTriggerExit(Collider other)
@@ -122,6 +163,8 @@ namespace WoodLand3D.Tiles
             {
                 TileUnlockSystem.Instance.HandleTileTriggerExit(this);
             }
+
+            HideHighlight();
         }
     }
 }

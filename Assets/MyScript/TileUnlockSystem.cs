@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using WoodLand3D.Gameplay;
 using WoodLand3D.UI;
+using WoodLand3D.CameraSystems;
 
 namespace WoodLand3D.Tiles
 {
@@ -42,6 +43,7 @@ namespace WoodLand3D.Tiles
         [SerializeField] private SquareGridManager grid;
         [SerializeField] private PlayerInventory inventory;
         [SerializeField] private UnlockPanelUI ui;
+        [SerializeField] private CameraFollow cameraFollow;
 
         private readonly HashSet<Vector2Int> _unlockedPositions = new HashSet<Vector2Int>();
         private bool _loaded;
@@ -66,6 +68,7 @@ namespace WoodLand3D.Tiles
             grid = gridManager;
 
             EnsureInventoryAndUi();
+            EnsureCamera();
             LoadStateAndApply();
         }
 
@@ -75,6 +78,12 @@ namespace WoodLand3D.Tiles
                 inventory = FindObjectOfType<PlayerInventory>();
             if (ui == null)
                 ui = FindObjectOfType<UnlockPanelUI>(includeInactive: true);
+        }
+
+        private void EnsureCamera()
+        {
+            if (cameraFollow == null)
+                cameraFollow = FindObjectOfType<CameraFollow>();
         }
 
         private void LoadStateAndApply()
@@ -158,6 +167,17 @@ namespace WoodLand3D.Tiles
         public void ShowUnlockUI(TileController tile)
         {
             EnsureInventoryAndUi();
+            EnsureCamera();
+
+            if (grid == null)
+            {
+                Debug.LogWarning("TileUnlockSystem: Grid reference is missing.");
+                return;
+            }
+
+            // Close any previous UI before opening a new one.
+            HideUI();
+
             _currentTileForUI = tile;
 
             if (tile.IsUnlocked)
@@ -193,6 +213,16 @@ namespace WoodLand3D.Tiles
             if (ui != null)
             {
                 ui.Show(tile, cost, canUnlock, message, () => TryUnlock(tile, cost));
+            }
+            else
+            {
+                Debug.LogWarning("TileUnlockSystem: UnlockPanelUI reference is missing.");
+            }
+
+            // Optional camera focus toward this tile.
+            if (cameraFollow != null)
+            {
+                cameraFollow.FocusOnTile(tile.transform.position);
             }
         }
 
@@ -231,8 +261,18 @@ namespace WoodLand3D.Tiles
 
         private void TryUnlock(TileController tile, int cost)
         {
-            if (tile == null || grid == null || inventory == null)
+            if (tile == null)
                 return;
+            if (grid == null)
+            {
+                Debug.LogWarning("TileUnlockSystem: Grid reference is missing in TryUnlock.");
+                return;
+            }
+            if (inventory == null)
+            {
+                Debug.LogWarning("TileUnlockSystem: Inventory reference is missing in TryUnlock.");
+                return;
+            }
 
             if (tile.IsUnlocked)
                 return;
