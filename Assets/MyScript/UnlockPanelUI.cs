@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace WoodLand3D.UI
 {
@@ -11,8 +12,8 @@ namespace WoodLand3D.UI
     {
         [Header("UI References")]
         [SerializeField] private Canvas rootCanvas;
-        [SerializeField] private Text tilePosText;
-        [SerializeField] private Text messageText;
+        [SerializeField] private TMP_Text tilePosText;
+        [SerializeField] private TMP_Text messageText;
         [SerializeField] private Button unlockButton;
         [SerializeField] private Button closeButton;
 
@@ -26,7 +27,12 @@ namespace WoodLand3D.UI
             if (closeButton != null)
                 closeButton.onClick.AddListener(Hide);
 
-            Hide();
+            // 시작 시에는 패널을 숨기되, GameObject 자체는 활성 상태로 둔다.
+            // (Canvas.enabled 만 끄고, 필요 시 Show()에서 다시 켠다)
+            if (rootCanvas != null)
+            {
+                rootCanvas.enabled = false;
+            }
         }
 
         public void Show(
@@ -51,7 +57,12 @@ namespace WoodLand3D.UI
             }
 
             if (rootCanvas != null)
+            {
+                // GameObject가 비활성화된 상태여도 안전하게 다시 켜준다.
+                if (!rootCanvas.gameObject.activeSelf)
+                    rootCanvas.gameObject.SetActive(true);
                 rootCanvas.enabled = true;
+            }
             else
                 gameObject.SetActive(true);
         }
@@ -61,7 +72,9 @@ namespace WoodLand3D.UI
             _onUnlock = null;
 
             if (rootCanvas != null)
+            {
                 rootCanvas.enabled = false;
+            }
             else
                 gameObject.SetActive(false);
         }

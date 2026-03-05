@@ -44,3 +44,23 @@ Y: 45°
 - 마을 지역
 - 시장
 - 사찰
+
+## Core Gameplay Loop
+
+The main gameplay loop is based on exploration and expansion.
+
+1. Player moves across tiles.
+2. Locked tiles are covered by clouds.
+3. Player unlocks tiles using gold.
+4. Unlocked tiles spawn resources.
+5. Player harvests resources.
+6. Resources respawn over time.
+7. Player expands the map further.
+
+This loop ensures continuous progression and exploration.
+
+## 향후 디자인 메모
+
+- 각 타일은 \"이 타일을 여는 이유\"가 분명하도록, 타일마다 고유 보상(자원 타입, NPC, 스토리 조각)을 최소 하나씩 가진다.
+- 플레이어가 길을 잃지 않도록, 항상 다음으로 노려볼 만한 타일(추천 타일)을 UI 상에서 부드럽게 강조해 준다.
+- 반복 채집이 지루해지지 않도록, 특정 확률로 작은 이벤트(희귀 자원, NPC 대사, 날씨 변화 등)를 섞어 리듬을 만든다.

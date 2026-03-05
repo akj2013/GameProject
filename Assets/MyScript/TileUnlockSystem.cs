@@ -75,15 +75,15 @@ namespace WoodLand3D.Tiles
         private void EnsureInventoryAndUi()
         {
             if (inventory == null)
-                inventory = FindObjectOfType<PlayerInventory>();
+                inventory = UnityEngine.Object.FindFirstObjectByType<PlayerInventory>();
             if (ui == null)
-                ui = FindObjectOfType<UnlockPanelUI>(includeInactive: true);
+                ui = UnityEngine.Object.FindFirstObjectByType<UnlockPanelUI>(FindObjectsInactive.Include);
         }
 
         private void EnsureCamera()
         {
             if (cameraFollow == null)
-                cameraFollow = FindObjectOfType<CameraFollow>();
+                cameraFollow = UnityEngine.Object.FindFirstObjectByType<CameraFollow>();
         }
 
         private void LoadStateAndApply()
@@ -232,6 +232,12 @@ namespace WoodLand3D.Tiles
             if (ui != null)
             {
                 ui.Hide();
+            }
+
+            // When UI is closed, release camera focus back to the player.
+            if (cameraFollow != null)
+            {
+                cameraFollow.ClearFocus();
             }
         }
 

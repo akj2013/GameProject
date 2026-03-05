@@ -31,3 +31,8 @@
  - TileController에 하이라이트 기능 및 구름 언락 연출(스케일 업 후 비활성화) 추가, TileUnlockSystem에 카메라 포커스 연동
  - Assets/Scripts/Core/Resources/ 아래에 ResourceType/ResourceNode/ResourceSpawnPoint/TileResourceSpawner/PlayerHarvestTest 구현
  - TileResourceSpawner를 TileController와 연동해 타일 언락 시 나무/바위 리소스를 스폰하고, 고갈 후 지연 리스폰 루프 구축
+
+2026-03-06 10:10 JST - GameProject 리포에 프로토타입 씬/스크립트 동기화
+ - CLEAN_EXPORT/Assets/Scripts 에 타일 시스템/리소스 시스템/카메라/언락 UI 스크립트를 최신 상태로 복사
+ - CLEAN_EXPORT/Assets/Scenes/Bootstrap.unity 를 ProtoTypeScene 기준으로 갱신해, GitHub 상에서 GPT가 재현 가능한 테스트 씬 확보
+ - GameProject main 브랜치에 \"Add tile resource spawning and prototype scene\" 커밋으로 푸시 완료

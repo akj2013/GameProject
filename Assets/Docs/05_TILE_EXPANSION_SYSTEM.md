@@ -38,3 +38,40 @@ Tile
  │   ├ Resources
  │   └ Buildings
  └ Trigger
+
+
+ ## Current Implementation
+
+Tile grid:
+
+Grid Size: 10 x 10  
+Tile Size: 10 units
+
+World generation:
+
+- SquareGridManager generates the tile grid.
+- Only the center tile starts unlocked.
+
+Unlock condition:
+
+A tile can be unlocked if:
+
+- At least one adjacent tile (up, down, left, right) is already unlocked.
+
+Unlock process:
+
+1. Player approaches a locked tile.
+2. Tile highlight appears.
+3. Unlock UI appears.
+4. Player pays gold cost.
+5. Cloud disappears with animation.
+6. Tile becomes active.
+7. Resources spawn.
+
+Unlock data is saved using PlayerPrefs.
+
+## 디자인 메모
+
+- 타일 확장 비용 곡선은 \"조금씩 비싸지지만, 한 번에 크게 막히지는 않도록\" 완만한 커브로 설계한다.
+- 플레이어가 괜히 열었다고 느끼지 않게, 새로 언락한 타일에는 항상 눈에 띄는 변화(자원, 뷰, NPC 등)를 배치한다.
+- 너무 많은 잠금 타일이 한 번에 보이면 피로하니, 카메라 구성과 안개/배경을 활용해 항상 \"다음 두세 칸\" 정도만 신경 쓰이게 만든다.

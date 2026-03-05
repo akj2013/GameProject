@@ -38,6 +38,14 @@ namespace WoodLand3D.CameraSystems
         {
             _focusPoint = tilePos;
         }
+
+        /// <summary>
+        /// Clear any explicit focus so the camera goes back to tracking its target.
+        /// </summary>
+        public void ClearFocus()
+        {
+            _focusPoint = null;
+        }
     }
 }
 
