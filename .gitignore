@@ -103,9 +103,10 @@ Backup_*/
 !/Assets/Readme.asset
 !/Assets/Readme.asset.meta
 
-#! 서드파티/툴/스크린샷 등은 계속 무시
+#! 서드파티/툴/스크린샷/사운드 등은 계속 무시
 /Assets/MCPForUnity/
 /Assets/TextMesh Pro/
 /Assets/Screenshots/
 /Assets/TextMesh Pro.meta
 /Assets/UnusedAssets*
+/Assets/Resources/SOUND/
