@@ -9,7 +9,8 @@ using WoodLand3D.CameraSystems;
 namespace WoodLand3D.Tiles
 {
     /// <summary>
-    /// Handles tile unlock rules, costs, UI and save/load.
+    /// 타일 언락 규칙, 비용 계산, 언락 UI 표시, 저장/로드를 담당한다.
+    /// 그리드 준비 후 해제된 타일 목록을 PlayerPrefs에 저장하고, 플레이어가 타일 트리거에 들어오면 언락 패널을 띄운다.
     /// </summary>
     public class TileUnlockSystem : MonoBehaviour
     {
@@ -20,14 +21,8 @@ namespace WoodLand3D.Tiles
         {
             public int x;
             public int y;
-
             public Vector2IntSerializable() { }
-            public Vector2IntSerializable(Vector2Int v)
-            {
-                x = v.x;
-                y = v.y;
-            }
-
+            public Vector2IntSerializable(Vector2Int v) { x = v.x; y = v.y; }
             public Vector2Int ToVector2Int() => new Vector2Int(x, y);
         }
 
@@ -39,11 +34,15 @@ namespace WoodLand3D.Tiles
 
         public static TileUnlockSystem Instance { get; private set; }
 
-        [Header("References")]
-        [SerializeField] private SquareGridManager grid;
-        [SerializeField] private PlayerInventory inventory;
-        [SerializeField] private UnlockPanelUI ui;
-        [SerializeField] private CameraFollow cameraFollow;
+        [Header("참조")]
+        [SerializeField, Tooltip("타일 그리드 매니저")]
+        private SquareGridManager grid;
+        [SerializeField, Tooltip("플레이어 인벤토리(골드 소비용)")]
+        private PlayerInventory inventory;
+        [SerializeField, Tooltip("언락 패널 UI")]
+        private UnlockPanelUI ui;
+        [SerializeField, Tooltip("카메라 포커스용")]
+        private CameraFollow cameraFollow;
 
         private readonly HashSet<Vector2Int> _unlockedPositions = new HashSet<Vector2Int>();
         private bool _loaded;
@@ -56,17 +55,15 @@ namespace WoodLand3D.Tiles
                 Destroy(gameObject);
                 return;
             }
-
             Instance = this;
         }
 
         /// <summary>
-        /// Called by SquareGridManager after it has built the grid.
+        /// 그리드가 구축된 뒤 호출된다. 저장 데이터 로드 후 타일에 적용한다.
         /// </summary>
         public void OnGridReady(SquareGridManager gridManager)
         {
             grid = gridManager;
-
             EnsureInventoryAndUi();
             EnsureCamera();
             LoadStateAndApply();
@@ -105,22 +102,18 @@ namespace WoodLand3D.Tiles
                         if (data != null && data.positions != null)
                         {
                             foreach (var p in data.positions)
-                            {
                                 _unlockedPositions.Add(p.ToVector2Int());
-                            }
                         }
                     }
                     catch (Exception e)
                     {
-                        Debug.LogWarning($"TileUnlockSystem: Failed to parse save data: {e.Message}");
+                        Debug.LogWarning($"TileUnlockSystem: 저장 데이터 파싱 실패: {e.Message}");
                     }
                 }
             }
 
-            // Ensure start tile is always unlocked.
             _unlockedPositions.Add(grid.StartUnlockedPos);
 
-            // Apply to tiles.
             for (int y = 0; y < grid.Height; y++)
             {
                 for (int x = 0; x < grid.Width; x++)
@@ -139,31 +132,33 @@ namespace WoodLand3D.Tiles
         {
             var data = new TileUnlockSaveData
             {
-                positions = _unlockedPositions
-                    .Select(p => new Vector2IntSerializable(p))
-                    .ToList()
+                positions = _unlockedPositions.Select(p => new Vector2IntSerializable(p)).ToList()
             };
-
             string json = JsonUtility.ToJson(data);
             PlayerPrefs.SetString(SaveKey, json);
             PlayerPrefs.Save();
         }
 
-        // Called by TileController when player enters tile trigger.
+        /// <summary>
+        /// 플레이어가 타일 트리거에 들어왔을 때 호출된다. 언락 UI를 표시한다.
+        /// </summary>
         public void HandleTileTriggerEnter(TileController tile)
         {
             ShowUnlockUI(tile);
         }
 
-        // Called by TileController when player exits tile trigger.
+        /// <summary>
+        /// 플레이어가 타일 트리거에서 나갔을 때 호출된다. 해당 타일용 UI면 숨긴다.
+        /// </summary>
         public void HandleTileTriggerExit(TileController tile)
         {
             if (_currentTileForUI == tile)
-            {
                 HideUI();
-            }
         }
 
+        /// <summary>
+        /// 지정한 타일에 대한 언락 패널을 띄운다. 비용·가능 여부를 계산해 UI에 전달한다.
+        /// </summary>
         public void ShowUnlockUI(TileController tile)
         {
             EnsureInventoryAndUi();
@@ -171,13 +166,11 @@ namespace WoodLand3D.Tiles
 
             if (grid == null)
             {
-                Debug.LogWarning("TileUnlockSystem: Grid reference is missing.");
+                Debug.LogWarning("TileUnlockSystem: 그리드 참조가 없습니다.");
                 return;
             }
 
-            // Close any previous UI before opening a new one.
             HideUI();
-
             _currentTileForUI = tile;
 
             if (tile.IsUnlocked)
@@ -194,9 +187,7 @@ namespace WoodLand3D.Tiles
             bool canUnlock = false;
 
             if (!canUnlockByRule)
-            {
                 message = "Cannot unlock: need at least one unlocked neighbor.";
-            }
             else
             {
                 if (inventory != null && inventory.HasGold(cost))
@@ -205,41 +196,34 @@ namespace WoodLand3D.Tiles
                     canUnlock = true;
                 }
                 else
-                {
                     message = $"Need {cost} Gold (not enough).";
-                }
             }
 
             if (ui != null)
-            {
                 ui.Show(tile, cost, canUnlock, message, () => TryUnlock(tile, cost));
-            }
             else
-            {
-                Debug.LogWarning("TileUnlockSystem: UnlockPanelUI reference is missing.");
-            }
+                Debug.LogWarning("TileUnlockSystem: UnlockPanelUI 참조가 없습니다.");
 
-            // Optional camera focus toward this tile.
             if (cameraFollow != null)
-            {
                 cameraFollow.FocusOnTile(tile.transform.position);
-            }
         }
 
+        /// <summary>
+        /// 언락 패널을 숨기고 카메라 포커스를 해제한다.
+        /// </summary>
         public void HideUI()
         {
             _currentTileForUI = null;
             if (ui != null)
-            {
                 ui.Hide();
-            }
+            if (cameraFollow != null)
+                cameraFollow.ClearFocus();
         }
 
         private int ComputeUnlockCost(Vector2Int pos)
         {
             if (grid == null)
                 return 0;
-
             Vector2Int start = grid.StartUnlockedPos;
             int distance = Mathf.Abs(pos.x - start.x) + Mathf.Abs(pos.y - start.y);
             return 50 + distance * 10;
@@ -249,13 +233,11 @@ namespace WoodLand3D.Tiles
         {
             if (grid == null)
                 return false;
-
             foreach (var neighbor in grid.GetNeighbors4(pos))
             {
                 if (neighbor.IsUnlocked)
                     return true;
             }
-
             return false;
         }
 
@@ -265,12 +247,12 @@ namespace WoodLand3D.Tiles
                 return;
             if (grid == null)
             {
-                Debug.LogWarning("TileUnlockSystem: Grid reference is missing in TryUnlock.");
+                Debug.LogWarning("TileUnlockSystem: TryUnlock에서 그리드 참조가 없습니다.");
                 return;
             }
             if (inventory == null)
             {
-                Debug.LogWarning("TileUnlockSystem: Inventory reference is missing in TryUnlock.");
+                Debug.LogWarning("TileUnlockSystem: TryUnlock에서 인벤토리 참조가 없습니다.");
                 return;
             }
 
@@ -283,7 +265,6 @@ namespace WoodLand3D.Tiles
                 ShowUnlockUI(tile);
                 return;
             }
-
             if (!inventory.HasGold(cost))
             {
                 ShowUnlockUI(tile);
@@ -298,4 +279,3 @@ namespace WoodLand3D.Tiles
         }
     }
 }
-

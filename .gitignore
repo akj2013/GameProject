@@ -1,51 +1,43 @@
-## Unity generated
+# CLEAN_EXPORT 전용 .gitignore
+# 이 폴더는 GameProject 원격 저장소에 푸시되는 유일한 내용입니다.
+# 아래에 없는 것은 추적하지 않습니다.
+
+# Unity generated
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
-/[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
-
-## IDE / OS
-.vs/
-.idea/
 *.csproj
 *.sln
-*.user
-*.unityproj
-*.pidb
-*.booproj
-*.svd
+*.suo
+
+# OS
 .DS_Store
 Thumbs.db
 
-## Never publish these folders
-/Assets/Legacy/
-/Assets/Resources/SOUND/
-/Assets/AssetPacks/
-/Assets/Plugins/
-/Assets/Samples/
-/Assets/TextMesh Pro/
-/Assets/MCPForUnity/
+# 허용하는 경로만 추적하고 나머지 무시 (실제로는 허용 목록만 커밋)
+# 다음만 포함: Assets/Scripts, Assets/Scenes, Assets/Docs, Packages, ProjectSettings
 
-## Never publish binary assets to public repo (safe default)
+# 제외 (실수로 복사된 경우)
+/Assets/Audio/
+/Assets/SOUND/
+/Assets/Legacy/
+/Assets/Models/
+/Assets/Mesh/
+/Assets/Textures/
+/Assets/Materials/
+/Assets/Prefabs/
+/Assets/AssetStoreTools/
+/Assets/Plugins/
+/Assets/ThirdParty/
+/Assets/Resources/External/
 *.fbx
-*.obj
-*.blend
-*.dae
-*.glb
-*.gltf
 *.png
 *.jpg
 *.jpeg
-*.tga
-*.tif
-*.tiff
-*.psd
 *.wav
 *.mp3
 *.ogg
 *.flac
-*.aif
-*.aiff
