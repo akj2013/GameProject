@@ -60,6 +60,15 @@ Implemented systems:
 
 This version is considered the **Core Gameplay Prototype**.
 
+## Assets 구조 (스크립트)
+
+게임 스크립트는 모두 **Assets/MyScript** 아래에 통일되어 있다.
+
+- **MyScript/** – 타일·언락·UI·카메라 등 프로젝트 전용 스크립트  
+- **MyScript/Resources/** – 리소스 시스템 (ResourceType, ResourceNode, ResourceSpawnPoint, TileResourceSpawner, PlayerHarvestTest)
+
+이전에 사용하던 `Assets/Scripts/Core/Resources` 폴더는 제거되었고, 동일 내용이 MyScript/Resources로 이전된 상태이다.
+
 ## 앞으로의 방향 (요약)
 
 - 채집 → 판매 → 확장까지 이어지는 \"골드 루프\"를 명확하게 설계해, 플레이 타임 5~10분 단위로 성취감을 주는 것을 목표로 한다.

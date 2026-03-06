@@ -6,16 +6,22 @@ using TMPro;
 namespace WoodLand3D.UI
 {
     /// <summary>
-    /// Simple unlock panel UI for tiles.
+    /// 타일 언락 비용과 메시지를 보여주는 간단한 패널 UI.
+    /// TileUnlockSystem이 표시/숨김을 제어하며, 언락 버튼 클릭 시 콜백을 호출한다.
     /// </summary>
     public class UnlockPanelUI : MonoBehaviour
     {
-        [Header("UI References")]
-        [SerializeField] private Canvas rootCanvas;
-        [SerializeField] private TMP_Text tilePosText;
-        [SerializeField] private TMP_Text messageText;
-        [SerializeField] private Button unlockButton;
-        [SerializeField] private Button closeButton;
+        [Header("UI 참조")]
+        [SerializeField, Tooltip("패널의 루트 캔버스")]
+        private Canvas rootCanvas;
+        [SerializeField, Tooltip("타일 좌표 표시 텍스트")]
+        private TMP_Text tilePosText;
+        [SerializeField, Tooltip("비용/메시지 표시 텍스트")]
+        private TMP_Text messageText;
+        [SerializeField, Tooltip("언락 실행 버튼")]
+        private Button unlockButton;
+        [SerializeField, Tooltip("닫기 버튼")]
+        private Button closeButton;
 
         private Action _onUnlock;
 
@@ -23,18 +29,16 @@ namespace WoodLand3D.UI
         {
             if (unlockButton != null)
                 unlockButton.onClick.AddListener(OnUnlockClicked);
-
             if (closeButton != null)
                 closeButton.onClick.AddListener(Hide);
 
-            // 시작 시에는 패널을 숨기되, GameObject 자체는 활성 상태로 둔다.
-            // (Canvas.enabled 만 끄고, 필요 시 Show()에서 다시 켠다)
             if (rootCanvas != null)
-            {
                 rootCanvas.enabled = false;
-            }
         }
 
+        /// <summary>
+        /// 패널을 표시하고 비용·가능 여부·메시지를 설정한다. 언락 가능 시 버튼 클릭 시 onUnlock이 호출된다.
+        /// </summary>
         public void Show(
             Tiles.TileController tile,
             int cost,
@@ -46,19 +50,15 @@ namespace WoodLand3D.UI
 
             if (tilePosText != null)
                 tilePosText.text = $"Tile ({tile.GridPos.x}, {tile.GridPos.y})";
-
             if (messageText != null)
                 messageText.text = message;
-
             if (unlockButton != null)
             {
                 unlockButton.interactable = canUnlock;
                 unlockButton.gameObject.SetActive(canUnlock);
             }
-
             if (rootCanvas != null)
             {
-                // GameObject가 비활성화된 상태여도 안전하게 다시 켜준다.
                 if (!rootCanvas.gameObject.activeSelf)
                     rootCanvas.gameObject.SetActive(true);
                 rootCanvas.enabled = true;
@@ -67,14 +67,14 @@ namespace WoodLand3D.UI
                 gameObject.SetActive(true);
         }
 
+        /// <summary>
+        /// 패널을 숨긴다.
+        /// </summary>
         public void Hide()
         {
             _onUnlock = null;
-
             if (rootCanvas != null)
-            {
                 rootCanvas.enabled = false;
-            }
             else
                 gameObject.SetActive(false);
         }
@@ -85,4 +85,3 @@ namespace WoodLand3D.UI
         }
     }
 }
-

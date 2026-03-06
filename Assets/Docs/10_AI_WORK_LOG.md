@@ -36,3 +36,9 @@
  - CLEAN_EXPORT/Assets/Scripts 에 타일 시스템/리소스 시스템/카메라/언락 UI 스크립트를 최신 상태로 복사
  - CLEAN_EXPORT/Assets/Scenes/Bootstrap.unity 를 ProtoTypeScene 기준으로 갱신해, GitHub 상에서 GPT가 재현 가능한 테스트 씬 확보
  - GameProject main 브랜치에 \"Add tile resource spawning and prototype scene\" 커밋으로 푸시 완료
+
+2026-03-06 (추가) - 스크립트 폴더 통일
+ - Assets/Scripts/Core/Resources/ 를 Assets/MyScript/Resources/ 로 이전하여 스크립트를 MyScript 한 곳으로 통일
+ - 리소스 관련 스크립트 5개(ResourceType, ResourceNode, ResourceSpawnPoint, TileResourceSpawner, PlayerHarvestTest) 이동, 기존 .meta GUID 유지로 프리팹/참조 유지
+ - 빈 폴더 Scripts/Core/Resources 및 상위 Scripts 트리 제거
+ - 네임스페이스(WoodLand3D.Core.Resources) 및 TileController 등 참조는 변경 없음
