@@ -1,26 +1,66 @@
 # CLEAN_EXPORT 전용 .gitignore
-# 이 폴더는 GameProject 원격 저장소에 푸시되는 유일한 내용입니다.
-# 아래에 없는 것은 추적하지 않습니다.
+# GameProject 원격에 푸시되는 내용: Assets/Scripts, Assets/Scenes, Assets/Docs, Packages, ProjectSettings
 
 # Unity generated
+.utmp/
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
+/[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+*.log
 *.csproj
 *.sln
 *.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+*.blend1
+*.blend1.meta
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+/[Aa]ssets/Plugins/Editor/JetBrains*
+*.DotSettings.user
+.vs/
+.gradle/
+ExportedObj/
+.consulo/
+sysinfo.txt
+mono_crash.*
+*.apk
+*.aab
+*.unitypackage
+*.unitypackage.meta
+*.app
+crashlytics-build.properties
+InitTestScene*.unity*
+/ServerData
+/[Aa]ssets/StreamingAssets/aa*
+/[Aa]ssets/AddressableAssetsData/link.xml*
+/[Aa]ssets/Addressables_Temp*
+/[Aa]ssets/AddressableAssetsData/*/*.bin*
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db*
+/[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers*
+/[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
 # OS
 .DS_Store
 Thumbs.db
 
-# 허용하는 경로만 추적하고 나머지 무시 (실제로는 허용 목록만 커밋)
-# 다음만 포함: Assets/Scripts, Assets/Scenes, Assets/Docs, Packages, ProjectSettings
-
-# 제외 (실수로 복사된 경우)
+# CLEAN_EXPORT에는 Scripts, Scenes, Docs, Packages, ProjectSettings만 복사됨
+# 아래는 실수로 들어온 경우 제외 (일반적으로 해당 폴더 자체가 없음)
 /Assets/Audio/
 /Assets/SOUND/
 /Assets/Legacy/
