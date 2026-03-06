@@ -20,7 +20,7 @@ namespace WoodLand3D.Gameplay.Interaction
 
         private void TryHarvest()
         {
-            Vector3 origin = transform.position + Vector3.up * 0.5f;
+            Vector3 origin = transform.position + Vector3.up * 0.5f + transform.forward * 0.3f;
             Vector3 dir = transform.forward;
             if (Physics.Raycast(origin, dir, out var hit, rayDistance, hitMask, QueryTriggerInteraction.Ignore))
             {
