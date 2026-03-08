@@ -42,3 +42,13 @@
  - 리소스 관련 스크립트 5개(ResourceType, ResourceNode, ResourceSpawnPoint, TileResourceSpawner, PlayerHarvestTest) 이동, 기존 .meta GUID 유지로 프리팹/참조 유지
  - 빈 폴더 Scripts/Core/Resources 및 상위 Scripts 트리 제거
  - 네임스페이스(WoodLand3D.Core.Resources) 및 TileController 등 참조는 변경 없음
+
+2026-03-06 - 자동 채집·플레이어 애니메이션 연동 및 Git 푸시 (GameProject main)
+ - 자동 채집: 틱 기반 피해 제거 → 애니메이션 이벤트 시점 기반 피해 1회 적용으로 리팩터링 (PlayerAutoHarvest)
+ - ToolType(Axe/Pickaxe 등), ResourceToolMapping, ResourceNode.Initialize/RespawnTime 추가·연동
+ - PlayerMover: Animator 참조, SetFloat("Speed"), PlayAttackAnimation()/PlayMineAnimation() 추가; AC_Player_Base 파라미터 연동
+ - PlayerAutoHarvest: OnHarvestHitEvent(Animation Event 전용), OnHarvestAnimationFinished, Animator 폴백으로 Axe/PickAxe 이탈 시 상태 해제
+ - Core.Events.ResourceGainedEvents 정적 API 추가; PlayerInventory OnResourceChanged, GetResourceAmount, HasGold 추가; ResourceHUD/TileUnlockSystem 호환
+ - 문서: AutoHarvest_Design_Deliverables.md, Player_Animator_Setup_Report.md 추가
+ - 16_GIT_WORKFLOW 기준 Export-Clean.ps1 실행 후 CLEAN_EXPORT에서 git pull / add / commit / push (merge·rebase·force push 미사용)
+ - 커밋 412af59: feat: auto harvest with animation-event damage; PlayerMover Animator Speed/Attack/Mine; fix: harvest state fallback; docs 추가

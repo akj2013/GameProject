@@ -171,6 +171,7 @@
 
 #### 주의사항
 - “드랍 아이템을 줍는 시스템” 대신 “즉시 획득 + HUD 반영 + 흡수 VFX” 방식으로 구현한다.
+- **Animator 상태 이름과 코드 계약**: `PlayerAutoHarvest`는 채집 애니메이션 종료를 감지할 때 Animator Base Layer의 스테이트 이름을 사용한다. 코드는 **"Axe"**, **"PickAxe"** 두 이름을 `Animator.StringToHash`로 비교한다. Animator Controller(예: AC_Player_Base)에서 이 스테이트 이름을 바꾸면 `TryClearHarvestStateWhenAnimationLeft()` 폴백이 동작하지 않아, 도끼/곡괭이 한 번 재생 후 채집이 더 이상 시작되지 않을 수 있다. **스테이트 이름을 변경할 경우 `PlayerAutoHarvest.cs`의 `StateNameAxe` / `StateNamePickAxe`에 사용되는 문자열을 동일하게 수정해야 한다.** (Animation Event로 `OnHarvestAnimationFinished`를 호출하면 폴백 없이도 동작하지만, Event 미설정 시 이 계약에 의존한다.)
 
 
 ---
