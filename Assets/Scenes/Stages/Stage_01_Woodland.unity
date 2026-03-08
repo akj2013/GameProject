@@ -871,7 +871,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WoodLand3D.CameraSystems.CameraFollow
   target: {fileID: 3571129087497252017}
+  offset: {x: 0, y: 8, z: -6}
   smoothTime: 0.25
+  useFixedRotation: 1
+  fixedRotation: {x: 55, y: 0, z: 0}
 --- !u!1 &546392197
 GameObject:
   m_ObjectHideFlags: 0
@@ -2332,6 +2335,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2536399060406865330, guid: b6750b113ec98a34888ca19d9b5a6a7e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 59657dcbd45bae94d90f2350473baa15, type: 2}
     - target: {fileID: 5232050656755040349, guid: b6750b113ec98a34888ca19d9b5a6a7e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
