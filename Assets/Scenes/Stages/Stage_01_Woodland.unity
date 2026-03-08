@@ -163,11 +163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75aed0be54b3f9346b4fcd3001aac356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WoodLand3D.Tiles.Grid.SquareGridManager
-  tilePrefab: {fileID: 4936629632282135179, guid: 6ee1aa0fbcefc7b4383f25319ed4add5, type: 3}
+  tilePrefab: {fileID: 5095465421972801197, guid: 8709ebde4cf205148af49044ccf913a7, type: 3}
   width: 10
   height: 10
   tileSize: 10
-  tilesRoot: {fileID: 1789088336}
+  tilesRoot: {fileID: 2990937962595438461, guid: 8709ebde4cf205148af49044ccf913a7, type: 3}
   startUnlockedPos: {x: 5, y: 5}
 --- !u!1 &190475966
 GameObject:

@@ -52,3 +52,15 @@
  - 문서: AutoHarvest_Design_Deliverables.md, Player_Animator_Setup_Report.md 추가
  - 16_GIT_WORKFLOW 기준 Export-Clean.ps1 실행 후 CLEAN_EXPORT에서 git pull / add / commit / push (merge·rebase·force push 미사용)
  - 커밋 412af59: feat: auto harvest with animation-event damage; PlayerMover Animator Speed/Attack/Mine; fix: harvest state fallback; docs 추가
+
+2026-03-08 - 16_GIT_WORKFLOW 기준 GameProject 푸시 (CLEAN_EXPORT)
+ - Export-Clean.ps1 실행 후 CLEAN_EXPORT에서만 git pull / add / commit / push (merge·rebase·force push 미사용)
+ - 문서: Assets/Docs/Cursor_Helps/URP_Restore_Guide.md 추가
+ - 씬/스크립트/설정 동기화: Stage_01_Woodland.unity, CameraFollow.cs, GraphicsSettings.asset, ProjectSettings.asset, QualitySettings.asset
+ - 커밋 b7fef4e: docs: add URP restore guide; sync Stage01 scene, camera, project settings
+
+2026-03-08 - 타일 프리팹 교체 방법 정리 및 Tile_Ground_Base_02 설정 점검
+ - 씬 시작 시 깔리는 타일: SquareGridManager(GridManager)의 tilePrefab 한 군데서만 결정됨
+ - Tile_Ground_Base_02로 바꾸는 방법: Stage_01_Woodland → StageRoot/Systems/GridManager → Square Grid Manager의 Tile Prefab에 Tile_Ground_Base_02 프리팹 할당
+ - Tile_Ground_Base_02 점검: 루트에 TileController·BoxCollider·TileResourceSpawner, 자식 TileVisual/CloudVisual/UnlockedRoot 구조 적절. TileController의 Resource Spawner가 비어 있으면 언락 시 리소스 스폰 안 됨 → 같은 오브젝트의 Tile Resource Spawner 컴포넌트를 연결해야 함
+ - 문서: 10_AI_WORK_LOG.md에 위 내용 반영
