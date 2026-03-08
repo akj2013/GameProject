@@ -64,3 +64,4 @@
  - Tile_Ground_Base_02로 바꾸는 방법: Stage_01_Woodland → StageRoot/Systems/GridManager → Square Grid Manager의 Tile Prefab에 Tile_Ground_Base_02 프리팹 할당
  - Tile_Ground_Base_02 점검: 루트에 TileController·BoxCollider·TileResourceSpawner, 자식 TileVisual/CloudVisual/UnlockedRoot 구조 적절. TileController의 Resource Spawner가 비어 있으면 언락 시 리소스 스폰 안 됨 → 같은 오브젝트의 Tile Resource Spawner 컴포넌트를 연결해야 함
  - 문서: 10_AI_WORK_LOG.md에 위 내용 반영
+ - 16_GIT_WORKFLOW 기준 Export-Clean.ps1 → CLEAN_EXPORT에서 commit & push. 커밋 2064991: docs: 10_AI_WORK_LOG tile prefab and Tile_Ground_Base_02 note; scene sync
